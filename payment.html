@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment</title>
+    <style>
+      .container {
+        text-align: center;
+        width: 30%;
+        height: 500px;
+        border-radius: 20px;
+        margin: auto;
+        margin-top: 50px;
+        padding: 20px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      input {
+        height: 25px;
+      }
+      input[type="submit"] {
+        font-size: larger;
+        font-weight: bold;
+        margin-top: 20px;
+        height: 40px;
+        color: teal;
+        background-color: white;
+        border: 1px solid teal;
+        border-radius: 5px;
+      }
+      input[type="submit"]:hover {
+        background-color: teal;
+        color: white;
+        cursor: pointer;
+      }
+      form > label {
+        align-self: flex-start;
+        margin-bottom: 0px;
+      }
+      @media all and (min-width: 100px) and (max-width: 500px) {
+        .container {
+          width: 85%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Card Payment</h1>
+      <form>
+        <label for="">Card number</label><br />
+        <input id="num" type="number" /><br />
+        <label for="">Name on card</label><br />
+        <input id="name" type="text" /><br />
+        <label for="">CVV</label><br />
+        <input id="cvv" type="number" /><br />
+        <label for="">Expiry date</label><br />
+        <input id="date" type="date" /><br />
+        <input type="submit" value="Pay" />
+      </form>
+    </div>
+  </body>
+</html>
+
+<script>
+  document.querySelector("form").addEventListener("submit", myFunction);
+  function myFunction() {
+    event.preventDefault();
+    var name = document.querySelector("#name").value;
+    var cvv = document.querySelector("#cvv").value;
+    var num = document.querySelector("#num").value;
+    var date = document.querySelector("#date").value;
+    if (num == 1234567890123456 && cvv == 123) {
+      window.location.href = "OTP.html";
+    } else alert("ERROR : Invalid details");
+  }
+</script>

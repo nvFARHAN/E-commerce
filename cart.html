@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        background-color: teal;
+        padding: 20px;
+      }
+      .navbar > div > a {
+        text-decoration: none;
+        color: white;
+        font-size: larger;
+        border: 1px solid teal;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .navbar > div > a:hover {
+        color: teal;
+        background-color: white;
+      }
+      body {
+        width: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      }
+      #main {
+        padding: 10px;
+        display: flex;
+        justify-content: space-around;
+      }
+      #details > input {
+        width: 90%;
+        height: 30px;
+        margin-top: 10px;
+      }
+      #container {
+        width: 50%;
+        padding: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      #container > div {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        border-radius: 10px;
+        padding: 20px;
+      }
+      #container > div > img {
+        margin: auto;
+      }
+      span {
+        text-decoration: line-through;
+        margin: 10px;
+      }
+      #heading {
+        text-align: center;
+      }
+      button {
+        display: block;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: white;
+        color: teal;
+        border: 1px solid teal;
+        border-radius: 5px;
+      }
+      button:hover {
+        cursor: pointer;
+        color: white;
+        background-color: teal;
+      }
+      @media all and (min-width: 80px) and (max-width: 400px) {
+        #container {
+          width: 90%;
+          grid-template-columns: repeat(1, 1fr);
+        }
+        #main {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+      @media all and (min-width: 401px) and (max-width: 880px) {
+        #main {
+          flex-direction: column;
+        }
+        #container {
+          grid-template-columns: repeat(1, 1fr);
+          width: 70%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div><a href="mens.html">Mens</a></div>
+      <div><a href="womens.html">Womens</a></div>
+      <div><a href="login.html">Login</a></div>
+      <div><a href="signup.html">Signup</a></div>
+      <div><a href="cart.html">Cart</a></div>
+    </div>
+    <h1 id="heading">Cart</h1>
+    <div id="main">
+      <div id="container"></div>
+      <div id="details"></div>
+    </div>
+  </body>
+</html>
+
+<script>
+  var cartData = JSON.parse(localStorage.getItem("cart")) || [];
+  var cost = 0;
+  var discount = 0;
+  cartData.map((ele, index) => {
+    var box = document.createElement("div");
+
+    var img = document.createElement("img");
+    img.src = ele.image_url;
+
+    var name = document.createElement("p");
+    name.textContent = ele.name;
+
+    var price = document.createElement("p");
+    price.innerText = ele.price;
+    price.style.display = "inline";
+
+    var sPrice = document.createElement("span");
+    sPrice.innerText = ele.strikedoffprice;
+
+    var btn = document.createElement("button");
+    btn.innerText = "Remove";
+    btn.addEventListener("click", () => {
+      remove(ele, index);
+    });
+
+    box.append(img, name, price, sPrice, btn);
+
+    document.querySelector("#container").append(box);
+    cost += ele.price;
+  });
+  function remove(ele, index) {
+    cartData.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cartData));
+    window.location.reload();
+  }
+  //   var h1 = document.createElement("h1");
+  //   h1.innerText = `Total items : ${cartData.length}`;
+
+  //   var total = document.createElement("h1");
+  //   total.innerText = `Total cost : ${cost}`;
+
+  //   var label = document.createElement("label");
+  //   label.innerText = "Promotion Code";
+
+  //   var promo = document.createElement("input");
+
+  //   document.querySelector("#details").append(h1, total, label, promo);
+
+  document.querySelector("#details").innerHTML = `
+<h1>Total items : ${cartData.length}</h1>
+<label>Promotion code</label>
+<br>
+<input id="promo">
+<button id="apply">Apply</button>
+<h2 id="discount"">Discount : </h2>
+<h1 id="cost">Total cost : ${cost}</h1>
+<button id="pay">Proceed to Payment</button>
+`;
+  document.querySelector("#apply").addEventListener("click", myFunction);
+  function myFunction() {
+    var promo = document.querySelector("#promo").value;
+    if (promo == "masai30") {
+      discount = 0.3 * cost;
+      document.querySelector("#discount").innerText = `Discount : ${discount}`;
+      document.querySelector("#cost").innerText = `Total cost : ${
+        cost - discount
+      }`;
+    } else {
+      document.querySelector("#promo").value = "Invalid Code";
+      document.querySelector("#promo").style.color = "red";
+    }
+  }
+
+  document.querySelector("#pay").addEventListener("click", () => {
+    window.location.href = "payment.html";
+  });
+</script>
